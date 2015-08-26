@@ -10,7 +10,7 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Core
     {
         public const int intScriptTimeout = 20;
         public const int intImplicitWaitTimeout = 20;
-        public const int intPageLoadTimeout = 20;
+        public const int intPageLoadTimeout = 60;
         public const int intTestTimeout = 60;
 
         public const string strBrowserUnderTest = "chrome";
@@ -23,5 +23,12 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Core
 
         public const string strUsername = "company.admin";
         public const string strPassword = "1234";
+
+        //public const string strFontBeginPass = "<font size = 2 color=\"green\">";
+        //public const string strFontBeginFail = "<font size = 2 color=\"red\">";
+        //public const string strFontEnd = "</font>";
+        public const string strFontBeginPass = "";
+        public const string strFontBeginFail = "";
+        public const string strFontEnd = "";
     }
 }

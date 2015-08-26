@@ -38,7 +38,6 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Core
         private string strUrl;
 
         public WebDriver(){
-            Console.WriteLine("CLASS :: WebDriver");
             setTestParameters();
             try{
                 if(getRunLocation().ToLower() == "local"){

@@ -13,8 +13,6 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Tests
 
         public BaseTestClass()
         {
-            Console.WriteLine("CLASS :: BaseTestClass");
-
             setTestTimeout(Constants.intTestTimeout);
             setBaseTestClass(this);
         }

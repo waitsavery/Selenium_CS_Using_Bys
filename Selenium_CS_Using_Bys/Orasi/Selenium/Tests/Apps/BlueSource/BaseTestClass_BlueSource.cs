@@ -10,10 +10,8 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Tests.Apps.BlueSource
 {
     public class BaseTestClass_BlueSource : BaseTestClass
     {
-        public BaseTestClass_BlueSource()
-        {
-            Console.WriteLine("CLASS :: BaseTestClass_BlueSource");
-        }
+        public BaseTestClass_BlueSource() { }
+
         [SetUp]
         public void setup()
         {

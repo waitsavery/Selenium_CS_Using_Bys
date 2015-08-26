@@ -24,15 +24,17 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Pages.Apps.BlueSource
             verifyLoginPageURL();
         }
 
-        public void login() { 
+        public void login() {
             enterUsername();
             enterPassword();
             clickLogin();
         }
-        private void enterUsername() { 
-            set(txtUserName, Constants.strUsername); 
+        private void enterUsername() {
+            syncVisible(txtUserName);
+            set(txtUserName, Constants.strUsername);
         }
         private void enterPassword() {
+            syncVisible(txtPassword);
             set(txtPassword, Constants.strPassword); 
         }
         private void clickLogin() { 
