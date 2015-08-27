@@ -441,22 +441,285 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Core
          *         SYNCS WITH WEBDRIVERWAIT          *
          *********************************************
          *********************************************/
-
-        public Boolean syncVisibleWait(By by)
-        {
+        /// <summary>
+        ///     Used for reporting to determine if the element is expected to be visible or hidden
+        /// </summary>
+        /// <param name="expectedVisible">Boolean true is the element is expected to be visible, false otherwise</param>
+        /// <returns>String value "visible" or "hidden"</returns>
+        private string expectVisibleOrHidden(Boolean expectedVisible){
+            if (expectedVisible)
+                return "visible";
+            else
+                return "hidden";
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become visible
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be visible false otherwise</param>
+        /// <returns>Boolean true if the element is visible, false otherwise</returns>
+        public Boolean syncVisibleWait(By by, Boolean expectedVisible){
             Boolean elementVisible = false;
             setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectVisibleOrHidden(expectedVisible) + " within [ " + Constants.intImplicitWaitTimeout.ToString() + " ] seconds.");
             WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(Constants.intImplicitWaitTimeout));
-            try
-            {
-                IWebElement waitElement = wait.Until(ExpectedConditions.ElementIsVisible(getBy()));
+            try{
+                wait.Until(ExpectedConditions.ElementIsVisible(getBy()));
+                elementVisible = true;
             }
-            catch (TimeoutException te)
-            {
-
+            catch (TimeoutException){}
+            return elementVisible;
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become visible
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be visible false otherwise</param>
+        /// <returns>Boolean true if the element is visible, false otherwise</returns>
+        public Boolean syncVisibleWait(By by, int timeout, Boolean expectedVisible){ 
+            Boolean elementVisible = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectVisibleOrHidden(expectedVisible) + " within [ " + timeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(timeout));
+            try{
+                wait.Until(ExpectedConditions.ElementIsVisible(getBy()));
+                elementVisible = true;
             }
+            catch (TimeoutException) { }
 
             return elementVisible;
         }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become visible
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be visible false otherwise</param>
+        /// <returns>Boolean true if the element is visible, false otherwise</returns>
+        public Boolean syncVisibleWait(By by, Boolean failOnFalse, Boolean expectedVisible){
+            Boolean elementVisible = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectVisibleOrHidden(expectedVisible) + " within [ " + Constants.intImplicitWaitTimeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(Constants.intImplicitWaitTimeout));
+            try{
+                wait.Until(ExpectedConditions.ElementIsVisible(getBy()));
+                elementVisible = true;
+            }
+            catch (TimeoutException) { }
+
+            if (failOnFalse && !elementVisible){
+                Console.WriteLine(Constants.strFontBeginFail + DateTime.Now.ToString() + " :: FAIL :: " + "The element @FindBy[ " + getElementLocator() + " ] was not " + expectVisibleOrHidden(expectedVisible) + " after [" + Constants.intImplicitWaitTimeout + "] seconds." + Constants.strFontEnd);
+                Assert.True(elementVisible);
+            }
+            return elementVisible;
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become visible
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be visible false otherwise</param>
+        /// <returns>Boolean true if the element is visible, false otherwise</returns>
+        public Boolean syncVisibleWait(By by, int timeout, Boolean failOnFalse, Boolean expectedVisible){
+            Boolean elementVisible = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectVisibleOrHidden(expectedVisible) + " within [ " + timeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(timeout));
+            try{
+                wait.Until(ExpectedConditions.ElementIsVisible(getBy()));
+                elementVisible = true;
+            }
+            catch (TimeoutException) { }
+
+            if (failOnFalse && !elementVisible){
+                Console.WriteLine(Constants.strFontBeginFail + DateTime.Now.ToString() + " :: FAIL :: " + "The element @FindBy[ " + getElementLocator() + " ] was not " + expectVisibleOrHidden(expectedVisible) + " after [" + timeout.ToString() + "] seconds." + Constants.strFontEnd);
+                Assert.True(elementVisible);
+            }
+            return elementVisible;
+        }
+        /// <summary>
+        ///     Repurposes the syncVisibleWait() method to determine if an element is hidden
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be hidden, false otherwise</param>
+        /// <returns>Boolean true if the element is expceted to be hidden, false otherwise</returns>
+        public Boolean syncHiddenWait(By by, Boolean expectedVisible) { return !syncVisibleWait(by, expectedVisible); }
+        /// <summary>
+        ///     Repurposes the syncVisibleWait() method to determine if an element is hidden
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be hidden, false otherwise</param>
+        /// <returns>Boolean true if the element is expceted to be hidden, false otherwise</returns>
+        public Boolean syncHiddenWait(By by, int timeout, Boolean expectedVisible) { return !syncVisibleWait(by, timeout, expectedVisible); }
+        /// <summary>
+        ///     Repurposes the syncVisibleWait() method to determine if an element is hidden
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be hidden, false otherwise</param>
+        /// <returns>Boolean true if the element is expceted to be hidden, false otherwise</returns>
+        public Boolean syncHiddenWait(By by, Boolean failOnFalse, Boolean expectedVisible) { return !syncVisibleWait(by, failOnFalse, expectedVisible); }
+        /// <summary>
+        ///     Repurposes the syncVisibleWait() method to determine if an element is hidden
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be hidden, false otherwise</param>
+        /// <returns>Boolean true if the element is expceted to be hidden, false otherwise</returns>
+        public Boolean syncHiddenWait(By by, int timeout, Boolean failOnFalse, Boolean expectedVisible) { return !syncVisibleWait(by, timeout, failOnFalse, expectedVisible); }
+
+        /// <summary>
+        ///     Used for reporting to determine if the element is expected to be enabled or disabled
+        /// </summary>
+        /// <param name="expectedVisible">Boolean true is the element is expected to be enabled, false otherwise</param>
+        /// <returns>String value "enabled" or "disabled"</returns>
+        private string expectEnabledOrDisabled(Boolean expectedEnabled){
+            if (expectedEnabled)
+                return "enabled";
+            else
+                return "disabled";
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become clickable, which is the standard used to determine if an element is enabled
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be enabled false otherwise</param>
+        /// <returns>Boolean true if the element is enabled, false otherwise</returns>
+        public Boolean syncEnabledWait(By by, Boolean expectedEnabled) {
+            Boolean elementEnabled = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectEnabledOrDisabled(expectedEnabled) + " within [ " + Constants.intImplicitWaitTimeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(Constants.intImplicitWaitTimeout));
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(getBy()));
+                elementEnabled = true;
+            }
+            catch (TimeoutException) { }
+            return elementEnabled;
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become clickable, which is the standard used to determine if an element is enabled
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be enabled false otherwise</param>
+        /// <returns>Boolean true if the element is enabled, false otherwise</returns>
+        public Boolean syncEnabledWait(By by, int timeout, Boolean expectedEnabled)
+        {
+            Boolean elementEnabled = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectEnabledOrDisabled(expectedEnabled) + " within [ " + timeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(timeout));
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(getBy()));
+                elementEnabled = true;
+            }
+            catch (TimeoutException) { }
+            return elementEnabled;
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become clickable, which is the standard used to determine if an element is enabled
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be enabled false otherwise</param>
+        /// <returns>Boolean true if the element is enabled, false otherwise</returns>
+        public Boolean syncEnabledWait(By by, Boolean failOnFalse, Boolean expectedEnabled)
+        {
+            Boolean elementEnabled = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectEnabledOrDisabled(expectedEnabled) + " within [ " + Constants.intImplicitWaitTimeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(Constants.intImplicitWaitTimeout));
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(getBy()));
+                elementEnabled = true;
+            }
+            catch (TimeoutException) { }
+            if (failOnFalse && !elementEnabled) {
+                Console.WriteLine(Constants.strFontBeginFail + DateTime.Now.ToString() + " :: FAIL :: " + "The element @FindBy[ " + getElementLocator() + " ] was not " + expectEnabledOrDisabled(expectedEnabled) + " after [" + Constants.intImplicitWaitTimeout.ToString() + "] seconds." + Constants.strFontEnd); 
+            }
+            return elementEnabled;
+        }
+        /// <summary>
+        ///     Sets the current By value (and subsequently the current IWebElement) and uses the Selenium WebDriverWait.Until to wait for the element to become clickable, which is the standard used to determine if an element is enabled
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/FluentWait.html#until(com.google.common.base.Predicate)
+        ///     SEE: https://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedVisible">Boolean true if the element is expected to be enabled false otherwise</param>
+        /// <returns>Boolean true if the element is enabled, false otherwise</returns>
+        public Boolean syncEnabledWait(By by, int timeout, Boolean failOnFalse, Boolean expectedEnabled)
+        {
+            Boolean elementEnabled = false;
+            setBy(by);
+            Console.WriteLine(DateTime.Now.ToString() + " :: INFO :: " + "Syncing to element @FindBy[ " + getElementLocator() + " ] to be " + expectEnabledOrDisabled(expectedEnabled) + " within [ " + timeout.ToString() + " ] seconds.");
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(timeout));
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(getBy()));
+                elementEnabled = true;
+            }
+            catch (TimeoutException) { }
+            if (failOnFalse && !elementEnabled)
+            {
+                Console.WriteLine(Constants.strFontBeginFail + DateTime.Now.ToString() + " :: FAIL :: " + "The element @FindBy[ " + getElementLocator() + " ] was not " + expectEnabledOrDisabled(expectedEnabled) + " after [" + timeout.ToString() + "] seconds." + Constants.strFontEnd);
+            }
+            return elementEnabled;
+        }
+        /// <summary>
+        ///     Repurposes the syncEnabledWait() method to determine if an element is disabled
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="expectedEnabled">Boolean true if the element is expected to be disabled, false otherwise</param>
+        /// <returns>Boolean true if the element is disabled, false otherwise</returns>
+        public Boolean syncDisabledWait(By by, Boolean expectedEnabled) { return !syncEnabledWait(by, expectedEnabled); }
+        /// <summary>
+        ///     Repurposes the syncEnabledWait() method to determine if an element is disabled
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="expectedEnabled">Boolean true if the element is expected to be disabled, false otherwise</param>
+        /// <returns>Boolean true if the element is disabled, false otherwise</returns>
+        public Boolean syncDisabledWait(By by, int timeout, Boolean expectedEnabled) { return !syncEnabledWait(by, timeout, expectedEnabled); }
+        /// <summary>
+        ///     Repurposes the syncEnabledWait() method to determine if an element is disabled
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not disabled, false if the test should continue</param>
+        /// <param name="expectedEnabled">Boolean true if the element is expected to be enabled, false otherwise</param>
+        /// <returns>Boolean true if the element is disabled, false otherwise</returns>
+        public Boolean syncDisabledWait(By by, Boolean failOnFalse, Boolean expectedEnabled) { return !syncEnabledWait(by, failOnFalse, expectedEnabled); }
+        /// <summary>
+        ///     Repurposes the syncEnabledWait() method to determine if an element is hidden
+        /// </summary>
+        /// <param name="by">Current By value</param>
+        /// <param name="timeout">Integer timeout to use while searching for the element</param>
+        /// <param name="failOnFalse">Boolean true if the test is to fail if the element is not visible, false if the test should continue</param>
+        /// <param name="expectedEnabled">Boolean true if the element is expected to be enabled, false otherwise</param>
+        /// <returns>Boolean true if the element is disabled, false otherwise</returns>
+        public Boolean syncDisabledWait(By by, int timeout, Boolean failOnFalse, Boolean expectedEnabled) { return !syncEnabledWait(by, timeout, failOnFalse, expectedEnabled); }
     }
 }

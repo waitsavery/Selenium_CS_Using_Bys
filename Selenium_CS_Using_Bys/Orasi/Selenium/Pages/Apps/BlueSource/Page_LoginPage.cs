@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using Selenium_CS_Using_Bys.Orasi.Selenium.Core;
 using Selenium_CS_Using_Bys.Orasi.Selenium.Tests;
 using System;
@@ -38,18 +39,27 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Pages.Apps.BlueSource
             set(txtPassword, Constants.strPassword); 
         }
         private void clickLogin() {
-            syncEnabled(btnLogin, true);
+            syncEnabled(btnLogin);
             click(btnLogin); 
         }
         private void verifyLoginPageURL() {
-            loopCounter = 0;
-            Boolean pageLoaded = false;
-            do{
-                Thread.Sleep(TimeSpan.FromMilliseconds(100));
-                loopCounter++;
-                if (getDriver().Url.Contains("/login")) { pageLoaded = true; }
-                Assert.LessOrEqual(loopCounter, Constants.intTestTimeout * 10, "The expected login page URL was not found within [" + Constants.intTestTimeout.ToString() + "] seconds.");
-            }while(!pageLoaded);
+            //loopCounter = 0;
+            //Boolean pageLoaded = false;
+            //do{
+            //    Thread.Sleep(TimeSpan.FromMilliseconds(100));
+            //    loopCounter++;
+            //    if (getDriver().Url.Contains("/login")) { pageLoaded = true; }
+            //    Assert.LessOrEqual(loopCounter, Constants.intTestTimeout * 10, "The expected login page URL was not found within [" + Constants.intTestTimeout.ToString() + "] seconds.");
+            //}while(!pageLoaded);
+
+            WebDriverWait wait = new WebDriverWait(getDriver(), TimeSpan.FromSeconds(Constants.intImplicitWaitTimeout));
+            try{
+                wait.Until(ExpectedConditions.UrlContains("/login"));
+            }
+            catch (TimeoutException te) { 
+                Console.WriteLine("The URL did not indicate that the login page was loaded after [" +Constants.intImplicitWaitTimeout.ToString()+ "] seconds.");
+                throw te;
+            }
         }
     }
 }
