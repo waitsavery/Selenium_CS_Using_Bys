@@ -30,14 +30,15 @@ namespace Selenium_CS_Using_Bys.Orasi.Selenium.Pages.Apps.BlueSource
             clickLogin();
         }
         private void enterUsername() {
-            syncVisible(txtUserName);
+            syncVisible(txtUserName, true);
             set(txtUserName, Constants.strUsername);
         }
         private void enterPassword() {
-            syncVisible(txtPassword);
+            syncVisible(txtPassword, true);
             set(txtPassword, Constants.strPassword); 
         }
-        private void clickLogin() { 
+        private void clickLogin() {
+            syncEnabled(btnLogin, true);
             click(btnLogin); 
         }
         private void verifyLoginPageURL() {
